@@ -8,6 +8,7 @@ const headers = {
   },
 };
 
+// makes call to dad jokes api
 exports.generateJoke = async () => {
   const res = await axios.get(
     'https://dad-jokes.p.rapidapi.com/random/joke',
