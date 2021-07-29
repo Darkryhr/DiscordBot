@@ -1,11 +1,11 @@
 const Discord = require('discord.js');
 const config = require('./config.json');
-
+const { generateJoke } = require('./jokes');
 const client = new Discord.Client();
 
 const prefix = '!';
 
-client.on('message', (msg) => {
+client.on('message', async (msg) => {
   if (msg.author.bot) return;
   if (!msg.content.startsWith(prefix)) return;
 
@@ -20,7 +20,23 @@ client.on('message', (msg) => {
     const numArgs = args.map((x) => parseFloat(x));
     const sum = numArgs.reduce((counter, x) => (counter += x));
     msg.reply(`The sum of all the arguments you provided is ${sum}!`);
+  } else if (cmd === 'joke') {
+    try {
+      const { body } = await generateJoke();
+      const [joke] = body;
+      msg.reply(joke.setup);
+      setTimeout(() => msg.reply(joke.punchline), 2000);
+    } catch (err) {
+      console.log(err);
+    }
   }
+});
+
+client.on('guildMemberAdd', async (member) => {
+  console.log('JOINED');
+  if (msg.author.bot) return;
+  const username = member.user.username;
+  member.send(`Hello, ${username}! Welcome Aboard!`);
 });
 
 client.login(config.BOT_TOKEN);
