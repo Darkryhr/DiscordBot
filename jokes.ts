@@ -1,4 +1,7 @@
+import dotenv from 'dotenv';
 const axios = require('axios');
+
+dotenv.config();
 
 const headers = {
   headers: {
